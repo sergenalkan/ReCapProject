@@ -23,13 +23,26 @@ namespace Business.Concrete
             //iş kodları
             return _carDal.GetAll();
         }
-        public List<Car> GetByID(int id)
-        {
-            return _carDal.GetById(id);
-        }
+        
         public void Add(Car car)
         {
-            _carDal.Add(car);
+            if (car.Description.Length >= 2 || car.DailyPrice > 0)
+            {
+                _carDal.Add(car);
+                Console.WriteLine(car.Description + " açıklamalı araç eklendi.");
+            }
+            else
+                Console.WriteLine("Araba açıklaması 2 harften büyük olmalı ve günlük fiyat 0'dan büyük olmalı.");
+        }
+
+        public List<Car> GetCarsByBrandId(int brandId)
+        {
+            return _carDal.GetAll(c => c.BrandId == brandId);
+        }
+
+        public List<Car> GetCarsByColorId(int colorId)
+        {
+            return _carDal.GetAll(c => c.ColorId == colorId);
         }
     }
 }
