@@ -12,25 +12,46 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            //CarTest();
+            //CarJoinDto();
+            //CarAdd();
             CarManager carManager = new CarManager(new EfCarDal());
-          
+            Car car1 = new Car() { BrandId = 2, ColorId = 2, DailyPrice = 15, Description = "Opel", ModelYear = 1996 };
+            carManager.Update(car1);
+
+
+
+            //CarManager carManager = new CarManager(new EfCarDal());
+            //Console.WriteLine(carManager.GetCarsByCarId(1).BrandId.ToString());
+
+
+
+
+        }
+
+        private static void CarAdd()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            Car car1 = new Car() { BrandId = 2, ColorId = 2, DailyPrice = 15, Description = "Opel", ModelYear = 1996 };
+            carManager.Add(car1);
+        }
+
+        private static void CarJoinDto()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            foreach (var car in carManager.GetCarDetails())
+            {
+                Console.WriteLine(car.BrandName + " markalı " + car.ColorName + " renkli aracın günlük fiyatı " + car.DailyPrice + " dir.");
+            }
+        }
+
+        private static void CarTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
             foreach (var car in carManager.GetAll())
             {
-                Console.WriteLine(car.BrandId+" markalı aracın açıklaması:"+car.Description);
+                Console.WriteLine(car.CarId + " idli aracın açıklaması:" + car.Description);
             }
-            foreach (var c in carManager.GetCarsByBrandId(1))
-            {
-                Console.WriteLine(c.BrandId + " markalı aracın açıklaması:" + c.Description); ;
-            }
-         
-            Car car1 = new Car();
-            car1.BrandId = 2;
-            car1.ColorId = 2;
-            car1.DailyPrice = -1;
-            car1.Description = "C";
-            car1.ModelYear = 1996;
-            carManager.Add(car1);
-            
         }
     }
 }

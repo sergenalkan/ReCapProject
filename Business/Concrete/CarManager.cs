@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -34,15 +35,23 @@ namespace Business.Concrete
             else
                 Console.WriteLine("Araba açıklaması 2 harften büyük olmalı ve günlük fiyat 0'dan büyük olmalı.");
         }
-
-        public List<Car> GetCarsByBrandId(int brandId)
+        public void Update(Car car)
         {
-            return _carDal.GetAll(c => c.BrandId == brandId);
+            _carDal.Update(car);
+        }
+        public void Delete(Car car)
+        {
+            _carDal.Delete(car);
         }
 
-        public List<Car> GetCarsByColorId(int colorId)
+        public Car GetCarsByCarId(int carId)
         {
-            return _carDal.GetAll(c => c.ColorId == colorId);
+            return _carDal.Get(c => c.CarId == carId);
         }
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
+        }
+       
     }
 }
