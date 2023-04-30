@@ -12,21 +12,27 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //CarTest();
             //CarJoinDto();
+            //CarGetAll();
             //CarAdd();
-            CarManager carManager = new CarManager(new EfCarDal());
-            Car car1 = new Car() { BrandId = 2, ColorId = 2, DailyPrice = 15, Description = "Opel", ModelYear = 1996 };
-            carManager.Update(car1);
-
-
-
+            //CarUpdate();
+            //CarDelete();
             //CarManager carManager = new CarManager(new EfCarDal());
-            //Console.WriteLine(carManager.GetCarsByCarId(1).BrandId.ToString());
+            //Console.WriteLine(carManager.GetCarsByCarId(1).BrandId.ToString());            
+        }
 
+        private static void CarDelete()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            var result = carManager.GetCarsByCarId(9);
+            carManager.Delete(result);
+        }
 
-
-
+        private static void CarUpdate()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            Car car1 = new Car() { CarId = 2, BrandId = 2, ColorId = 2, DailyPrice = 15, Description = "Opel", ModelYear = 1996 };
+            carManager.Update(car1);
         }
 
         private static void CarAdd()
@@ -45,7 +51,7 @@ namespace ConsoleUI
             }
         }
 
-        private static void CarTest()
+        private static void CarGetAll()
         {
             CarManager carManager = new CarManager(new EfCarDal());
             foreach (var car in carManager.GetAll())

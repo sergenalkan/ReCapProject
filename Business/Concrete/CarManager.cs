@@ -38,10 +38,12 @@ namespace Business.Concrete
         public void Update(Car car)
         {
             _carDal.Update(car);
+            Console.WriteLine(car.Description + " açıklamalı araç güncellendi.");
         }
         public void Delete(Car car)
         {
             _carDal.Delete(car);
+            Console.WriteLine(car.Description + " açıklamalı araç silindi.");
         }
 
         public Car GetCarsByCarId(int carId)
