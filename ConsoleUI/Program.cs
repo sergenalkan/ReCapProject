@@ -16,15 +16,80 @@ namespace ConsoleUI
             //CarGetAll();
             //CarAdd();
             //CarUpdate();
-            //CarDelete();
-            //CarManager carManager = new CarManager(new EfCarDal());
-            //Console.WriteLine(carManager.GetCarsByCarId(1).BrandId.ToString());            
+            //CarDelete();            
+
+            //BrandAdd();
+            //BrandGetAll();
+            //BrandDelete();
+            //BrandUpdate();
+
+            //ColorAdd();
+            //ColorGetAll();
+            //ColorDelete();
+            //ColorUpdate();
+
+        }
+        private static void ColorUpdate()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            Color brand = new Color() { ColorId = 2, ColorName = "Fuşya" };
+            colorManager.Update(brand);
+        }
+
+        private static void ColorDelete()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            colorManager.Delete(colorManager.GetById(2).Data);
+        }
+
+        private static void ColorGetAll()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            foreach (var color in colorManager.GetAll().Data)
+            {
+                Console.WriteLine(color.ColorName + " rengi");
+            }
+        }
+
+        private static void ColorAdd()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            Color color = new Color() { ColorName = "Turkuaz" };
+            colorManager.Add(color);
+        }
+        private static void BrandUpdate()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            Brand brand = new Brand() { BrandId = 2, BrandName = "Chevrolet" };
+            brandManager.Update(brand);
+        }
+
+        private static void BrandDelete()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            brandManager.Delete(brandManager.GetById(2).Data);
+        }
+
+        private static void BrandGetAll()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            foreach (var brand in brandManager.GetAll().Data)
+            {
+                Console.WriteLine(brand.BrandName + " markası");
+            }
+        }
+
+        private static void BrandAdd()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            Brand brand = new Brand() { BrandName = "TOGG" };
+            brandManager.Add(brand);
         }
 
         private static void CarDelete()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            var result = carManager.GetCarsByCarId(9);
+            var result = carManager.GetCarsByCarId(9).Data;
             carManager.Delete(result);
         }
 
@@ -45,16 +110,27 @@ namespace ConsoleUI
         private static void CarJoinDto()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetCarDetails())
+
+            var result = carManager.GetCarDetails();
+
+            if (result.Success == true)
             {
-                Console.WriteLine(car.BrandName + " markalı " + car.ColorName + " renkli aracın günlük fiyatı " + car.DailyPrice + " dir.");
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.BrandName + " markalı " + car.ColorName + " renkli aracın günlük fiyatı " + car.DailyPrice + " dir.");
+                }
             }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+            
         }
 
         private static void CarGetAll()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetAll())
+            foreach (var car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.CarId + " idli aracın açıklaması:" + car.Description);
             }

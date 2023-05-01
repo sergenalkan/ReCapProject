@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Entities.DTOs;
+using Core.Utilities.Result;
+using Business.Constants;
 
 namespace Business.Concrete
 {
@@ -19,40 +21,51 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
             //iş kodları
-            return _carDal.GetAll();
+            if (DateTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
         }
         
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if (car.Description.Length >= 2 || car.DailyPrice > 0)
             {
-                _carDal.Add(car);
-                Console.WriteLine(car.Description + " açıklamalı araç eklendi.");
+                return new ErrorResult(Messages.CarNameInvalid);
             }
-            else
-                Console.WriteLine("Araba açıklaması 2 harften büyük olmalı ve günlük fiyat 0'dan büyük olmalı.");
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
         }
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
+            if (car.CarId<0)
+            {
+                return new ErrorResult(Messages.CarIdNull);
+            }
             _carDal.Update(car);
-            Console.WriteLine(car.Description + " açıklamalı araç güncellendi.");
-        }
-        public void Delete(Car car)
+            return new SuccessResult(Messages.CarUpdated);
+       }
+        public IResult Delete(Car car)
         {
+            if (car.CarId<0)
+            {
+                return new ErrorResult(Messages.CarIdNull);
+            }
             _carDal.Delete(car);
-            Console.WriteLine(car.Description + " açıklamalı araç silindi.");
+            return new SuccessResult(Messages.CarDeleted);
         }
 
-        public Car GetCarsByCarId(int carId)
+        public IDataResult<Car> GetCarsByCarId(int carId)
         {
-            return _carDal.Get(c => c.CarId == carId);
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId));
         }
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
        
     }

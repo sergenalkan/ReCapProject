@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -16,32 +18,42 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorDal.GetAll();
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
 
-        public Color GetById(int colorId)
+        public IDataResult<Color> GetById(int colorId)
         {
-            return _colorDal.Get(c => c.ColorId == colorId);
+            return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == colorId));
         }
-        public void Add(Color color)
+        public IResult Add(Color color)
         {
-            if (color.ColorName.Length >= 2)
+            if (color.ColorName.Length < 2)
             {
-                _colorDal.Add(color);
-                Console.WriteLine(color.ColorName + " araba rengi eklendi.");
+                return new ErrorResult(Messages.ColorNameInvalid);
             }
-            else
-                Console.WriteLine("Marka adı en az 2 harften oluşmalıdır.");
+            _colorDal.Add(color);
+
+            return new SuccessResult(Messages.ColorAdded);
         }
-        public void Update(Color color)
+        public IResult Update(Color color)
         {
+            if (color.ColorId < 0)
+            {
+                return new ErrorResult(Messages.ColorIdNull);
+            }
             _colorDal.Update(color);
+            return new SuccessResult(Messages.ColorUpdated);
         }
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
+            if (color.ColorId < 0)
+            {
+                return new ErrorResult(Messages.ColorIdNull);
+            }
             _colorDal.Delete(color);
+            return new SuccessResult(Messages.ColorDeleted);
         }
     }
 }
