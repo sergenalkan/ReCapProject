@@ -9,6 +9,10 @@ using System.Linq;
 using Entities.DTOs;
 using Core.Utilities.Result;
 using Business.Constants;
+using FluentValidation;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
+using Core.Aspect.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -31,12 +35,15 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
         }
         
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.Description.Length < 2 || car.DailyPrice < 0)
-            {
-                return new ErrorResult(Messages.CarNameInvalid);
-            }
+            //if (car.Description.Length < 2 || car.DailyPrice < 0)
+            //{
+            //    return new ErrorResult(Messages.CarNameInvalid);
+            //}
+            //ValidationTool.Validate(new CarValidator(), car);
+
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
         }
