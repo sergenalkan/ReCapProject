@@ -42,5 +42,9 @@ namespace Business.Constants
         public static string RentalAdded="Sipariş oluşturuldu";
         public static string RentalDeleted="Sipariş silindi";
         public static string RentalUpdated="Sipariş güncellendi";
+
+        public static string BrandLimitExceded="Marka sayısı aşıldığı için yeni ürün eklenemez";
+        public static string CarNameAlreadyExists="Bu açıklama başka arabaya ait";
+        public static string CarCountOfBrandError="Bir markada en fazla 10 araç olabilir";
     }
 }

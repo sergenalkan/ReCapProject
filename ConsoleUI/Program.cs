@@ -244,23 +244,24 @@ namespace ConsoleUI
         }
         #endregion
         #region Car
-        private static void CarDelete()
+        
+        private static void CarDelete()        
         {
-            CarManager carManager = new CarManager(new EfCarDal());
+            CarManager carManager = new CarManager(new EfCarDal(), new BrandManager(new EfBrandDal()));
             var result = carManager.GetCarsByCarId(9).Data;
             carManager.Delete(result);
         }
 
         private static void CarUpdate()
         {
-            CarManager carManager = new CarManager(new EfCarDal());
+            CarManager carManager = new CarManager(new EfCarDal(), new BrandManager(new EfBrandDal()));
             Car car1 = new Car() { CarId = 2, BrandId = 2, ColorId = 2, DailyPrice = 15, Description = "Renault", ModelYear = 1996 };
             carManager.Update(car1);
         }
 
         private static void CarAdd()
         {
-            CarManager carManager = new CarManager(new EfCarDal());
+            CarManager carManager = new CarManager(new EfCarDal(), new BrandManager(new EfBrandDal()));
             Car car1 = new Car() { BrandId = 1, ColorId = 1, DailyPrice = 15, Description = "Opel", ModelYear = 1996 };
             var result= carManager.Add(car1);
             Console.WriteLine(result.Message);
@@ -269,7 +270,7 @@ namespace ConsoleUI
 
         private static void CarJoinDto()
         {
-            CarManager carManager = new CarManager(new EfCarDal());
+            CarManager carManager = new CarManager(new EfCarDal(), new BrandManager(new EfBrandDal()));
 
             var result = carManager.GetCarDetails();
 
@@ -288,7 +289,7 @@ namespace ConsoleUI
         }
          private static void CarGetAll()
         {
-            CarManager carManager = new CarManager(new EfCarDal());
+            CarManager carManager = new CarManager(new EfCarDal(), new BrandManager(new EfBrandDal()));
             foreach (var car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.CarId + " idli aracın açıklaması:" + car.Description);
