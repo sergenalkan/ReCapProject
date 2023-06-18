@@ -1,4 +1,5 @@
-﻿using Business.Constants;
+﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers.FileHelper;
 using Core.Utilities.Result;
@@ -11,7 +12,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
-    public class CarImageManager
+    public class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;
         IFileHelper _fileHelper;
